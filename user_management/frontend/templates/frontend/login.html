@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+<div class="body-section">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h3 ml-auto"><a href="/">App</a></span>
+    </nav>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-4 m-4 p-3 border">
+                <center>
+                    <h5>Login</h5>
+                </center>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+                            placeholder="Enter email" value="{{form.cleaned_data.email}}" required>
+                        {% if form.email.errors %}
+                        <small class="form-text text-danger">{{ form.email.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="********" required>
+                        {% if form.password.errors %}
+                        <small class="form-text text-danger">{{form.password.errors.0}}</small>
+                        {% endif %}
+                    </div>
+                    <div class="center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <span>
+                            <a href="{% url 'signup-view' %}" class="">
+                                <p class="text-primary">Create a New Account ?</p>
+                            </a>
+                        </span>
+                        <span>
+                            <a href="{% url 'forgot-password-view' %}" class="">
+                                <p class="text-primary">Forgot Password ?</p>
+                            </a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

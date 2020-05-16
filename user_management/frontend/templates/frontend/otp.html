@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+<div class="body-section">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h3 ml-auto"><a href="/">App</a></span>
+    </nav>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-4 m-4 p-3 border">
+                <center>
+                    <h5>We have sent you an OTP on your phone no</h5>
+                </center>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mt-4">
+                        <input type="text" name="otp_id" value="{{otp_id}}" hidden>
+                        <input type="text" class="form-control" name="otp" placeholder="Enter your one time password"
+                            value="{{form.cleaned_data.email}}" required>
+                        {% if form.otp.errors %}
+                        <small class="form-text text-danger">{{ form.otp.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                    {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <strong>Alert!</strong>
+                        <span class="error-text">{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                    <div class="center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <span>
+                            <a href="{% url 'signup-view' %}" class="">
+                                <p class="text-primary">Create a New Account ?</p>
+                            </a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

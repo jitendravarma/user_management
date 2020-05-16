@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block main-content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mt-4 mb-4">Dashboard</h4>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            {% if not email_verified %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <strong>Attention!</strong>
+                <span class="error-text">We see that you have not verified your email. Please check your mail.</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

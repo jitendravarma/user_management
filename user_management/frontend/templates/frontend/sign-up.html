@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+<div class="body-section">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h3 ml-auto"><a href="/">App</a></span>
+    </nav>
+    <div class="row justify-content-center">
+        <div class="col-md-4 m-4 p-3 border">
+            <center>
+                <h4>Sign Up</h4>
+            </center>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+                        placeholder="Enter email" value="{{form.cleaned_data.email}}">
+                    {% if form.email.errors %}
+                    <small class="form-text text-danger">{{ form.email.errors.0 }}</small>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputFN">First Name</label>
+                    <input type="text" class="form-control" name="first_name" aria-describedby="emailHelp"
+                        placeholder="John" value="{{form.cleaned_data.first_name}}">
+                    {% if form.first_name.errors %}
+                    <small class="form-text text-danger">{{ form.first_name.errors.0 }}</small>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputLN">Last Name</label>
+                    <input type="text" class="form-control" name="last_name" aria-describedby="emailHelp"
+                        placeholder="Doe" value="{{form.cleaned_data.last_name}}">
+                    {% if form.last_name.errors %}
+                    <small class="form-text text-danger">{{ form.last_name.errors.0 }}</small>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Phone No</label>
+                    <input type="text" class="form-control" name="phone_no" placeholder="Your 10 digit phone no">
+                    {% if form.phone_no.errors %}
+                    <small class="form-text text-danger">{{form.phone_no.errors.0}}</small>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="********">
+                    {% if form.password.errors %}
+                    <small class="form-text text-danger">{{form.password.errors.0}}</small>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Confirm Password</label>
+                    <input type="password" class="form-control" name="confirm_password" placeholder="********">
+                    {% if form.confirm_password.errors %}
+                    <small class="form-text text-danger">{{form.confirm_password.errors.0}}</small>
+                    {% endif %}
+                </div>
+                <div class="center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <span>
+                    <a href="{% url 'login-view' %}" class="">
+                        <p class="text-primary">Already have an account ? Login</p>
+                    </a>
+                </span>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

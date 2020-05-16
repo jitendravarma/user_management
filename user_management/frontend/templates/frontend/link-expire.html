@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="row justify-content-center">
+                <div class="col-md-5 m-4 p-3 border">
+                    <div class="center">
+                        <h5>This link has expired</h5>
+                    </div>
+                    <span>
+                        <a href="{% url 'login-view' %}" class="">
+                            <p class="text-primary">Login ?</p>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

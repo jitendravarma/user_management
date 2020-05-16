@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,9 @@ ROOT_URLCONF = 'user_management.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '..', 'frontend', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +122,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "..", "frontend", "static"),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "..", "frontend")
+
+# to redirect user in email
+SERVER_URL = "http://127.0.0.1:8000"
+
+# redis server's broker url
+BROKER_URL = 'redis://127.0.0.1:6379/'
+
+AUTH_USER_MODEL = 'core.BaseUserProfile'
+LOGIN_URL = "/login/"
+
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+
+# settings to send mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'jitendravarma1738@gmail.com'
+EMAIL_HOST_PASSWORD = 'kesuchintuakkuu'
+
+# redis server's broker url
+BROKER_URL = 'redis://127.0.0.1:6379/'
+
+# for twilio sms
+TWILIO_ACCOUNT_SID = "AC9b1da982db962e886728df62ee11cb8d"
+TWILIO_AUTH_TOKEN = "9e00f7abbf6995c60de3770b4f381cbe"
+SMS_FROM = "+12067363179"

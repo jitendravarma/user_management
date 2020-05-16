@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" />
+
+	<title>{% block title %}{% endblock title %} | Home </title>
+	<meta name="description" content="{% block meta_desc %}{% endblock meta_desc %}">
+	<link rel="icon" href="">
+	<link rel="stylesheet" href="/static/css/jquery-ui.css">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="/static/css/parsley.css">
+	{% block css %}{% endblock css %}
+	{% block extra-css %}{% endblock extra-css %}
+	<link rel="stylesheet" href="/static/css/custom.css" media="all">
+</head>
+
+<body>
+
+	{% block content %}{% endblock content %}
+
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/jquery-ui.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	{% block js %}{% endblock js %}
+	{% block extra-js %}{% endblock extra-js %}
+	<script type="text/javascript" src="/static/js/custom.js"></script>
+	{% block app-based-js%}{% endblock app-based-js%}
+</body>
+
+</html>
