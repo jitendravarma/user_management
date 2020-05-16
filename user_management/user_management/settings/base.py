@@ -149,8 +149,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jitendravarma1738@gmail.com'
-EMAIL_HOST_PASSWORD = 'kesuchintuakkuu'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 # redis server's broker url
 BROKER_URL = 'redis://127.0.0.1:6379/'
