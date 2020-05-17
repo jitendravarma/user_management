@@ -13,12 +13,15 @@
                 <center>
                     <h5>We have sent you an OTP on your phone no</h5>
                 </center>
-                <form action="" method="POST">
+                <form action="" method="POST" data-parsley-validate="">
                     {% csrf_token %}
                     <div class="form-group mt-4">
                         <input type="text" name="otp_id" value="{{otp_id}}" hidden>
                         <input type="text" class="form-control" name="otp" placeholder="Enter your one time password"
-                            value="{{form.cleaned_data.email}}" required>
+                            value="{{form.cleaned_data.email}}" required pattern="\d*" data-parsley-minlength="5"
+                            data-parsley-maxlength="5"
+                            data-parsley-minlength-message="Otp should be exactly 5 characters long"
+                            data-parsley-maxlength-message="Otp should be exactly 5 characters long">
                         {% if form.otp.errors %}
                         <small class="form-text text-danger">{{ form.otp.errors.0 }}</small>
                         {% endif %}

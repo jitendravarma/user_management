@@ -47,3 +47,10 @@ body {
 		margin-left: -15rem;
 	}
 }
+
+.parsley-errors-list li.parsley-required, .parsley-errors-list li.parsley-minlength, 
+.parsley-errors-list  li.parsley-type, .parsley-errors-list  li.parsley-pattern,
+.parsley-errors-list  li.parsley-maxlength {
+    color: red;
+}
+

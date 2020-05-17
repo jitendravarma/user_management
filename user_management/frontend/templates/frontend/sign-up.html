@@ -12,12 +12,12 @@
             <center>
                 <h4>Sign Up</h4>
             </center>
-            <form action="" method="POST">
+            <form action="" method="POST" data-parsley-validate="">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
                     <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
-                        placeholder="Enter email" value="{{form.cleaned_data.email}}">
+                        placeholder="Enter email" value="{{form.cleaned_data.email}}" required>
                     {% if form.email.errors %}
                     <small class="form-text text-danger">{{ form.email.errors.0 }}</small>
                     {% endif %}
@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label for="exampleInputFN">First Name</label>
                     <input type="text" class="form-control" name="first_name" aria-describedby="emailHelp"
-                        placeholder="John" value="{{form.cleaned_data.first_name}}">
+                        placeholder="John" value="{{form.cleaned_data.first_name}}" required minlength="2">
                     {% if form.first_name.errors %}
                     <small class="form-text text-danger">{{ form.first_name.errors.0 }}</small>
                     {% endif %}
@@ -33,28 +33,33 @@
                 <div class="form-group">
                     <label for="exampleInputLN">Last Name</label>
                     <input type="text" class="form-control" name="last_name" aria-describedby="emailHelp"
-                        placeholder="Doe" value="{{form.cleaned_data.last_name}}">
+                        placeholder="Doe" value="{{form.cleaned_data.last_name}}" required minlength="2">
                     {% if form.last_name.errors %}
                     <small class="form-text text-danger">{{ form.last_name.errors.0 }}</small>
                     {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Phone No</label>
-                    <input type="text" class="form-control" name="phone_no" placeholder="Your 10 digit phone no">
+                    <input type="text" class="form-control" name="phone_no" placeholder="Your 10 digit phone no"
+                        data-parsley-minlength="10" data-parsley-maxlength="10" required pattern="\d*"
+                        data-parsley-minlength-message="Phone no should be exactly 10 digits"
+                        data-parsley-maxlength-message="Phone no should be exactly 10 digits">
                     {% if form.phone_no.errors %}
                     <small class="form-text text-danger">{{form.phone_no.errors.0}}</small>
                     {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="********">
+                    <input type="password" class="form-control" name="password" placeholder="********"
+                        data-parsley-minlength="8" required>
                     {% if form.password.errors %}
                     <small class="form-text text-danger">{{form.password.errors.0}}</small>
                     {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Confirm Password</label>
-                    <input type="password" class="form-control" name="confirm_password" placeholder="********">
+                    <input type="password" class="form-control" name="confirm_password" placeholder="********"
+                        data-parsley-minlength="8" required>
                     {% if form.confirm_password.errors %}
                     <small class="form-text text-danger">{{form.confirm_password.errors.0}}</small>
                     {% endif %}

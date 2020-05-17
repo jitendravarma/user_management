@@ -13,10 +13,10 @@
                 <center>
                     <h5>Enter your email</h5>
                 </center>
-                <form action="" method="POST">
+                <form action="" method="POST" data-parsley-validate="">
                     {% csrf_token %}
                     <div class="form-group mt-4">
-                        <input type="text" class="form-control" name="email" placeholder="Enter your email"
+                        <input type="email" class="form-control" name="email" placeholder="Enter your email"
                             value="{{form.cleaned_data.email}}" required>
                         {% if form.email.errors %}
                         <small class="form-text text-danger">{{ form.email.errors.0 }}</small>
