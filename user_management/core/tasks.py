@@ -66,3 +66,13 @@ def create_forgot_password_link(email):
         user = BaseUserProfile.objects.filter(email=email).first()
         ForgotPasswordLink.objects.filter(user=user).delete()
         ForgotPasswordLink.objects.create(user=user)
+
+
+@task(exchange="default", routing_key="default")
+def send_otp_sms(message, phone_no):
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    message = client.messages \
+        .create(
+            body=message, from_=settings.SMS_FROM,
+            to=f"{settings.COUNTRY_CODE}{phone_no}"
+        )
