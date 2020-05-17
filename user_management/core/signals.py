@@ -47,7 +47,7 @@ def send_mail_verification(instance):
 def send_otp(instance):
     otp_code = create_otp(instance)
     message = get_otp_message(otp_code)
-    # send_otp_sms.delay(message, instance.phone_no)
+    send_otp_sms.delay(message, instance.phone_no)
 
 
 @receiver(post_save, sender=BaseUserProfile)
