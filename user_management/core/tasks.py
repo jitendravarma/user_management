@@ -1,3 +1,4 @@
+from twilio.rest import Client
 from celery import Celery, task
 
 from django.conf import settings

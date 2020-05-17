@@ -1,8 +1,6 @@
 import string
 import random
 
-from twilio.rest import Client
-
 from django.conf import settings
 from django.dispatch import receiver
 from django.utils.encoding import force_bytes
