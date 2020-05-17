@@ -3,7 +3,8 @@ from django.contrib.auth import logout
 
 from .views import (
     LoginView, LogOutView, SignupView, OTPView, IndexView,
-    VerifyLinkView, LinkExpireView, ForgotPasswordMailView)
+    VerifyLinkView, LinkExpireView, ForgotPasswordView,
+    ForgotPasswordLinkView)
 
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     url(r"verify-email/(?P<slug>[-\w\d]+)$",
         VerifyLinkView.as_view(), name="verify-email-view",),
     url(r'^link-expire/$', LinkExpireView.as_view(), name="link-expire-view"),
-    url(r'^forgot-password/$', ForgotPasswordMailView.as_view(), name="forgot-password-view"),
+    url(r'^forgot-password/$', ForgotPasswordView.as_view(), name="forgot-password-view"),
+    url(r'^forgot-password/(?P<slug>[-\w\d]+)$', ForgotPasswordLinkView.as_view(), name="forgot-password-link-view"),
 ]

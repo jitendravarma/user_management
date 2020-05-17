@@ -75,11 +75,11 @@ def get_mail_message(link):
 
 
 def send_password_mail(instance):
-    hash_key = urlsafe_base64_encode(force_bytes(instance.email))
-    data = {"full_name": instance.full_name,
-            "to_email": instance.email, "hash_key": hash_key}
-    ForgotPasswordLink.objects.filter(user=instance).delete()
-    ForgotPasswordLink.objects.create(user=instance, hash_key=hash_key)
+    hash_key = urlsafe_base64_encode(force_bytes(instance.user.email))
+    data = {"full_name": instance.user.full_name,
+            "to_email": instance.user.email, "hash_key": hash_key}
+    instance.hash_key = hash_key
+    instance.save()
     send_forgot_password_mail.delay(data)
     message = get_mail_message(hash_key)
     # send_otp_sms(message, instance.phone_no)

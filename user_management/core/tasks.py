@@ -44,17 +44,25 @@ def send_verification_mail(data):
 
 # for sending mail for forgot password
 @task(exchange="default", routing_key="default")
-def send_forgot_password_mail(email):
+def send_forgot_password_mail(data):
     subject = f"Link to change password"
     body = f"""
     <p>
         Hello {data["full_name"]},
         <br>
         <p>Hi, {data['full_name']} here is your link to change your password</p>
-        <p><a href="{settings.SERVER_URL}/verify-email/{data["hash_key"]}">Verify email</a></p>
+        <p><a href="{settings.SERVER_URL}/forgot-password/{data["hash_key"]}">Verify email</a></p>
         <br>
         Thanks,<br>
         Team App. Inc<br>
     </p>
     """
     send_mail(subject, body, data['to_email'])
+
+
+@task(exchange="default", routing_key="default")
+def create_forgot_password_link(email):
+    if BaseUserProfile.objects.filter(email=email).exists():
+        user = BaseUserProfile.objects.filter(email=email).first()
+        ForgotPasswordLink.objects.filter(user=user).delete()
+        ForgotPasswordLink.objects.create(user=user)

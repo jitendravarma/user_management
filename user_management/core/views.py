@@ -2,8 +2,8 @@ import json
 
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth import login, logout
 from django.utils.encoding import force_text
+from django.contrib.auth import login, logout
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,10 +11,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import RedirectView, FormView, TemplateView
 
 from .backends import EmailModelBackend
-from .forms import LoginForm, SignUpForm, OTPForm, FPEmailForm
+from .forms import (LoginForm, SignUpForm, OTPForm, FPEmailForm,
+                    ChangePasswordForm)
 from .models import (BaseUserProfile, OTPVerification,
                      VerificationLink, ForgotPasswordLink)
-from .tasks import send_forgot_password_mail
+from .tasks import create_forgot_password_link
 
 
 # Create your views here.
@@ -165,7 +166,6 @@ class VerifyLinkView(TemplateView):
         context = super(VerifyLinkView, self).get_context_data(**kwargs)
         slug = self.kwargs["slug"]
         context["link"] = get_object_or_404(VerificationLink, hash_key=slug)
-        uid = force_text(urlsafe_base64_decode(self.kwargs["slug"]))
         email = force_text(urlsafe_base64_decode(slug))
         BaseUserProfile.objects.filter(email=user_id).update(
             is_active=True, email_verified=True)
@@ -173,24 +173,7 @@ class VerifyLinkView(TemplateView):
         return context
 
 
-class ForgotPasswordView(TemplateView):
-
-    template_name = "frontend/verification.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        if not VerificationLink.objects.filter(hash_key=self.kwargs["slug"]).exists():
-            return HttpResponseRedirect(reverse("link-expire-view"))
-        return super(ForgotPasswordView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(ForgotPasswordView, self).get_context_data(**kwargs)
-        slug = self.kwargs["slug"]
-        get_object_or_404(ForgotPasswordLink, hash_key=slug)
-        # ForgotPasswordLink.objects.filter(hash_key=slug).delete()
-        return context
-
-
-class ForgotPasswordMailView(FormView):
+class ForgotPasswordView(FormView):
     """
     This view confirms email for forgot password
     """
@@ -199,13 +182,50 @@ class ForgotPasswordMailView(FormView):
 
     def post(self, request, *args, **kwargs):
         form = FPEmailForm(request.POST)
-        email = form.data['email']
         if not form.is_valid():
             context = {
                 'form': form, "csrf_token": form.data['csrfmiddlewaretoken'], }
             return render(
                 request, context=context, template_name=self.template_name)
+        email = form.data['email']
         messages.error(self.request, "If your email exists in our database\
                        we will send your link to change your password")
-        user = BaseUserProfile.objects.filter(email=email)
+        create_forgot_password_link.delay(email)
         return HttpResponseRedirect(reverse('forgot-password-view'))
+
+
+class ForgotPasswordLinkView(FormView):
+    """
+    This view confirms email for forgot password
+    """
+    form_class = ChangePasswordForm
+    template_name = 'frontend/forgot-password.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not ForgotPasswordLink.objects.filter(hash_key=self.kwargs["slug"]).exists():
+            return HttpResponseRedirect(reverse("link-expire-view"))
+        return super(ForgotPasswordLinkView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ForgotPasswordLinkView, self).get_context_data(**kwargs)
+        slug = self.kwargs["slug"]
+        get_object_or_404(ForgotPasswordLink, hash_key=slug)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = ChangePasswordForm(request.POST)
+        if not form.is_valid():
+            context = {
+                'form': form, "csrf_token": form.data['csrfmiddlewaretoken'], }
+            return render(
+                request, context=context, template_name=self.template_name)
+        slug = self.kwargs["slug"]
+        email = force_text(urlsafe_base64_decode(slug))
+        if BaseUserProfile.objects.filter(email=email).exists():
+            user = BaseUserProfile.objects.filter(email=email).first()
+            user.set_password(form.data['password'])
+            user.save()
+            ForgotPasswordLink.objects.filter(hash_key=slug).delete()
+        messages.error(self.request, "We have updated your password")
+        return render(
+            request, template_name=self.template_name)
