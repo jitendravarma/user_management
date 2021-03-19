@@ -5,7 +5,7 @@ chardet==3.0.4
 Django==3.0.6
 django-phone-verify==2.0.0
 django-phonenumber-field==4.0.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 idna==2.9
 nexmo==2.4.0
 phonenumbers==8.12.3
