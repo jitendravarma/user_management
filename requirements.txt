@@ -9,7 +9,7 @@ djangorestframework==3.11.0
 idna==2.9
 nexmo==2.4.0
 phonenumbers==8.12.3
-PyJWT==1.7.1
+PyJWT==2.4.0
 python-dotenv==0.13.0
 pytz==2020.1
 requests==2.23.0
